@@ -13,6 +13,8 @@ services:
       - ./development.env
     networks:
       - node-ng-mysql
+    volumes:
+      - ./db/mysql-ecommerce:/var/lib/mysql
   backend:
     build: ./backend
     ports:
@@ -25,3 +27,6 @@ services:
       - /usr/scr/app/node_modules
     networks:
       - node-ng-mysql
+
+volumes:
+  mysql-ecommerce:
