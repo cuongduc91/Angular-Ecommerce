@@ -9,12 +9,8 @@ services:
     restart: always
     ports:
       - 3300:3306
-    environment:
-      MYSQL_HOST: "localhost"
-      MYSQL_ROOT_PASSWORD: "pass"
-      MYSQL_DATABASE: "db"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "pass"
+    env_file:
+      - ./development.env
     networks:
       - node-ng-mysql
   backend:
