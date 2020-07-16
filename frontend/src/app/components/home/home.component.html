@@ -82,6 +82,18 @@
 	                  </p>
 	                </div>
 	              </div>
+	              <div class="card-body">
+	                <h5>{{p.description.substr(0,70)}}...</h5>
+	                <p class="lead">{{p.price | currency: 'USD'}}</p>
+	              </div>
+	              <div class="row d-flex justify-content-center border-primary mb-4">
+	                <div class="col-md-6">
+	                  <button class="btn btn-outline-primary btn-lg btn-block" [class.disabled]="p.quantity < 1"
+	                    [class.btn-outline-danger]="p.quantity  < 1">
+	                    {{p.quantity<1 ? "Out of Stock":"Add to Cart"}}
+	                  </button>
+	                </div>
+	              </div>
 	            </div>
 	          </div>
 	          <!-- product -->
