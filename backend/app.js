@@ -5,32 +5,28 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const app = express();
-
-//Import Routes 
-const productsRouter = require('./routes/products');
-const usersRouter = require('./routes/users');
-
-//Use Routes 
-app.use('/api/products', productsRouter);
-app.use('/api/users', usersRouter);
-
+/* CORS */
 app.use(cors({
-  origin: "*",
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+  origin: '*',
+  methods: ['GET', 'PUT', 'DELETE', 'PATCH', 'POST'],
   allowedHeaders: 'Content-Type, Authorization, Origin, X-Requested-With, Accept'
-}))
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
-
-app.use(logger('dev'));
+}));
+app.use(logger('combined'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//Import Routes 
+const productsRouter = require('./routes/products');
+// const usersRouter = require('./routes/users');
+const ordersRouter = require('./routes/orders');
 
+//Use Routes 
+app.use('/api/products', productsRouter);
+// app.use('/api/users', usersRouter);
+app.use('/api/orders', ordersRouter);
 
 
 // catch 404 and forward to error handler
@@ -48,5 +44,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
