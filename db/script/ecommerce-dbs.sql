@@ -18,9 +18,9 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `addresses`
 --
-create database eshop;
+-- create database db;
 
-CREATE TABLE eshop.addresses (
+CREATE TABLE db.addresses (
   `id` int(11) NOT NULL,
   `line1` varchar(255) DEFAULT NULL,
   `line2` varchar(255) DEFAULT NULL,
@@ -35,11 +35,12 @@ CREATE TABLE eshop.addresses (
 --
 -- Dumping data for table `addresses`
 --
-delete from eshop.addresses;
+-- delete from db.addresses;
 
-INSERT INTO eshop.addresses (`id`, `line1`, `line2`, `city`, `state`, `country`, `phone`, `pincode`, `user_id`) VALUES
-(1, 'Test Address', 'Test Address', 'Gotha', 'Thüringen', 'Germany', '036000000', 99867, 1),
-(2, 'Test Address 2', 'Bahnhof Straße 17', 'Frankfurt', 'Hessen', 'Germany', '015423416251', 60306, 1);
+INSERT INTO db.addresses (`id`, `line1`, `line2`, `city`, `state`, `country`, `phone`, `pincode`, `user_id`) 
+VALUES
+(1, 'Muster', 'Muster', 'Gotha', 'Thüringen', 'Germany', '0162638119', 99867, 1),
+(2, 'TMuster', 'Bahnhof Straße 17', 'Frankfurt', 'Hessen', 'Germany', '015423416251', 60306, 1);
 
 -- --------------------------------------------------------
 
@@ -47,7 +48,7 @@ INSERT INTO eshop.addresses (`id`, `line1`, `line2`, `city`, `state`, `country`,
 -- Table structure for table `categories`
 --
 
-CREATE TABLE eshop.categories (
+CREATE TABLE db.categories (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -56,7 +57,7 @@ CREATE TABLE eshop.categories (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO eshop.categories (`id`, `title`) VALUES
+INSERT INTO db.categories (`id`, `title`) VALUES
 (1, 'Shoes'),
 (2, 'Electronics');
 
@@ -66,7 +67,7 @@ INSERT INTO eshop.categories (`id`, `title`) VALUES
 -- Table structure for table `orders`
 --
 
-CREATE TABLE eshop.orders (
+CREATE TABLE db.orders (
   `id` int(10) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -75,7 +76,7 @@ CREATE TABLE eshop.orders (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO eshop.orders (`id`, `user_id`) VALUES
+INSERT INTO db.orders (`id`, `user_id`) VALUES
 (7, 1),
 (8, 1),
 (13, 1),
@@ -185,7 +186,7 @@ INSERT INTO eshop.orders (`id`, `user_id`) VALUES
 -- Table structure for table `orders_details`
 --
 
-CREATE TABLE eshop.orders_details (
+CREATE TABLE db.orders_details (
   `id` int(10) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(10) NOT NULL,
@@ -196,7 +197,7 @@ CREATE TABLE eshop.orders_details (
 -- Dumping data for table `orders_details`
 --
 
-INSERT INTO eshop.orders_details (`id`, `order_id`, `product_id`, `quantity`) VALUES
+INSERT INTO db.orders_details (`id`, `order_id`, `product_id`, `quantity`) VALUES
 (1, 6, 27, 1),
 (2, 6, 26, 1),
 (3, 6, 49, 1),
@@ -366,7 +367,7 @@ INSERT INTO eshop.orders_details (`id`, `order_id`, `product_id`, `quantity`) VA
 -- Table structure for table `products`
 --
 
-CREATE TABLE eshop.products (
+CREATE TABLE db.products (
   `id` int(10) NOT NULL,
   `title` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
@@ -382,7 +383,7 @@ CREATE TABLE eshop.products (
 -- Dumping data for table `products`
 --
 
-INSERT INTO eshop.products (`id`, `title`, `image`, `images`, `description`, `price`, `quantity`, `short_desc`, `cat_id`) VALUES
+INSERT INTO db.products (`id`, `title`, `image`, `images`, `description`, `price`, `quantity`, `short_desc`, `cat_id`) VALUES
 (1, 'PlayStation 4', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSr-iFW5W8n3_jxNKiclAP_k71Fi9PGcojsMUC-vb8zbwJthbBd', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSr-iFW5W8n3_jxNKiclAP_k71Fi9PGcojsMUC-vb8zbwJthbBd;https://static.toiimg.com/thumb/msid-56933980,width-640,resizemode-4,imgsize-85436/56933980.jpg;https://cdn.mos.cms.futurecdn.net/3328be45e8c7fe5194055b4c687fb769-1200-80.jpeg;https://img.etimg.com/thumb/width-640,height-480,imgsize-76492,resizemode-1,msid-52464286/46.jpg', 'With PS4, gaming becomes a lot more power packed. Ultra-fast processors, high-performance system, real-time game sharing, remote play and lots more makes it the ultimate companion device.', 240.99, 0, 'Gaming console', 2),
 (2, 'PEGASUS 33 Running Shoes For Men', 'https://i.pinimg.com/originals/43/40/8e/43408ee5a8d234752ecf80bbc3832e65.jpg', 'https://i.pinimg.com/originals/43/40/8e/43408ee5a8d234752ecf80bbc3832e65.jpg;https://i.ebayimg.com/images/g/eQgAAOSw2XdePfc0/s-l640.jpg;https://i.ebayimg.com/images/g/j~gAAOSwQ6FdG9Eh/s-l640.jpg;https://i.ebayimg.com/images/g/OesAAOSwDnpeJhWN/s-l640.jpg', 'The Nike Zoom Pegasus Turbo 2 is updated with a feather-light upper, while innovative foam brings revolutionary responsiveness to your long-distance training', 59.99, 51, 'SPORTS SHOES', 1),
 (3, 'MEN\'S ADIDAS RUNNING KALUS SHOES', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSrEqFHfSbs6rUzcYnN_PcnS_D2JLXusKMVFk4Y8N_tn3hJgNIf', NULL, 'A well cushioned shoe with a fresher look that will appeal to young runners. Features Mesh upper for maximum ventilation, lightstrike IMEVA midsole with visible adiprene providing protection from harmful impact forces and durable Rubber outsole for long-lasting wear', 39.99, 69, 'SPORTS SHOES', 1),
@@ -442,9 +443,9 @@ INSERT INTO eshop.products (`id`, `title`, `image`, `images`, `description`, `pr
 --
 -- Table structure for table `users`
 --
-drop table eshop.users cascade;
+-- drop table db.users cascade;
 
-CREATE TABLE eshop.users (
+CREATE TABLE db.users (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -460,9 +461,9 @@ CREATE TABLE eshop.users (
 --
 -- Dumping data for table `users`
 --
-delete from eshop.users;
+-- delete from db.users;
 
-INSERT INTO eshop.users (`id`, `username`, `password`, `email`, `fname`, `lname`, `age`, `role`, `photoUrl`, `type`) VALUES
+INSERT INTO db.users (`id`, `username`, `password`, `email`, `fname`, `lname`, `age`, `role`, `photoUrl`, `type`) VALUES
 (1, 'john', '$2b$10$iLEz3tkVKeOCwuagcqhDUOV.Iswjc.I41unbnnFGiqK/gmstDCC3i', 'john@gmail.com', 'john', 'muster', 31, 777, '', 'local'),
 (2, 'shane', '$2b$10$ewemZ.oLASXUIWfUrjkDeOTCZUCpnhSlR3/Act2eQnvGg6mnGLOtG', 'shane123@gmail.com', 'shane', 'berg', 27, 555, '', 'local'),
 (11, 'mike', '$2b$10$vIS0W3LKhbx2tFh1GMYWhul7GWtIg4jnKU2C/NGux1pUG3QKMdNzO', 'mike-doe@excellent.com', 'mike', 'Leming', 40, 555, 'https://i.pinimg.com/originals/dc/55/a0/dc55a0fec14d93d9cf6fa32c32f7c7f2.jpg', 'local'),
@@ -476,38 +477,40 @@ INSERT INTO eshop.users (`id`, `username`, `password`, `email`, `fname`, `lname`
 --
 -- Indexes for table `addresses`
 --
-ALTER TABLE eshop.addresses
+ALTER TABLE db.addresses
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_addresses_users1_idx` (`user_id`);
 --
 -- Indexes for table `categories`
 --
-ALTER TABLE eshop.categories
+ALTER TABLE db.categories
   ADD PRIMARY KEY (`id`);
 --
 -- Indexes for table `orders`
 --
-ALTER TABLE eshop.orders
+ALTER TABLE db.orders
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_orders_users1_idx` (`user_id`);
 --
 -- Indexes for table `orders_details`
 --
-ALTER TABLE eshop.orders_details
+ALTER TABLE db.orders_details
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_orders_has_products_products1_idx` (`product_id`),
+  ADD KEY `fk_orders_has_products_products1_idx` 
+  (`product_id`),
   ADD KEY `fk_orders_has_products_orders1_idx` (`order_id`);
 --
 -- Indexes for table `products`
 --
-ALTER TABLE eshop.products
+ALTER TABLE db.products
   ADD PRIMARY KEY (`id`),
   ADD KEY `products_ibfk_1` (`cat_id`);
-ALTER TABLE eshop.products ADD FULLTEXT KEY `description` (`description`);
+ 
+ALTER TABLE db.products ADD FULLTEXT KEY `description` (`description`);
 --
 -- Indexes for table `users`
 --
-ALTER TABLE eshop.users
+ALTER TABLE db.users
   ADD PRIMARY KEY (`id`);
 --
 -- AUTO_INCREMENT for dumped tables
@@ -515,32 +518,32 @@ ALTER TABLE eshop.users
 --
 -- AUTO_INCREMENT for table `addresses`
 --
-ALTER TABLE eshop.addresses
+ALTER TABLE db.addresses
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `categories`
 --
-ALTER TABLE eshop.categories
+ALTER TABLE db.categories
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE eshop.orders
+ALTER TABLE db.orders
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 --
 -- AUTO_INCREMENT for table `orders_details`
 --
-ALTER TABLE eshop.orders_details
+ALTER TABLE db.orders_details
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
 --
 -- AUTO_INCREMENT for table `products`
 --
-ALTER TABLE eshop.products
+ALTER TABLE db.products
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE eshop.users
+ALTER TABLE db.users
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- Constraints for dumped tables
@@ -548,24 +551,39 @@ ALTER TABLE eshop.users
 --
 -- Constraints for table `addresses`
 --
-ALTER TABLE eshop.addresses
-  ADD CONSTRAINT `fk_addresses_users1` FOREIGN KEY (`user_id`) REFERENCES eshop.users (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE db.addresses
+  ADD CONSTRAINT `fk_addresses_users1` FOREIGN KEY (`user_id`) REFERENCES db.users (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 --
 -- Constraints for table `orders`
 --
-ALTER TABLE eshop.orders
-  ADD CONSTRAINT `users` FOREIGN KEY (`user_id`) REFERENCES eshop.users (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE db.orders
+  ADD CONSTRAINT `users` FOREIGN KEY (`user_id`) REFERENCES db.users (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 --
 -- Constraints for table `orders_details`
 --
-ALTER TABLE eshop.orders_details
-  ADD CONSTRAINT `fk_orders_has_products_orders1` FOREIGN KEY (`order_id`) REFERENCES eshop.orders (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_orders_has_products_products1` FOREIGN KEY (`product_id`) REFERENCES eshop.products (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE db.orders_details
+  ADD CONSTRAINT `fk_orders_has_products_orders1` FOREIGN KEY (`order_id`) REFERENCES db.orders (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_orders_has_products_products1` FOREIGN KEY (`product_id`) REFERENCES db.products (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 --
 -- Constraints for table `products`
 --
-ALTER TABLE eshop.products
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES eshop.categories (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE db.products
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES db.categories (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ 
+-- create view order of an user 
+create or replace view db.view_order as 
+	select o.id, p.title, p.description, p.price, u.username 
+	from 
+		db.orders_details od, 
+		db.orders o,
+		db.products p,
+		db.users u
+	where 
+		o.id = od.order_id and 
+		p.id = od.product_id and 
+		u.id = o.user_id ;
+		
+
 COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
