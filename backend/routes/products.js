@@ -51,4 +51,36 @@ router.get('/', function (req, res) {
 
 });
 
+/* GET one product */
+router.get('/:prodId', (req, res) => {
+  let productId = req.params.prodId;
+
+  database.table('db.products as p').join([{
+      table: "db.categories as c",
+      on: 'c.id= p.cat_id'
+    }]).withFields([
+      'c.title as category',
+      'p.title as name',
+      'p.price',
+      'p.quantity',
+      'p.description',
+      'p.image',
+      'p.images',
+      'p.id'
+    ])
+    .filter({
+      'p.id': productId
+    })
+    .get().then(prod => {
+      if (prod) {
+        res.status(200).json({
+          prod
+        })
+      } else {
+        res.json({
+          message: 'No product found'
+        });
+      }
+    }).catch(err => console.log(err));
+})
 module.exports = router;
