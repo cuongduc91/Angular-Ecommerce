@@ -118,7 +118,7 @@ router.get('/category/:catName', (req, res) => {
       })
     } else {
       res.json({
-        message: 'No product found with category ${req.params.catName}'
+        message: `No product found with category ${req.params.catName}`
       });
     }
   }).catch(err => console.log(err));
