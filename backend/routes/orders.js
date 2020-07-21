@@ -49,9 +49,7 @@ router.post('/new', async (req, res) => {
     userId,
     products
   } = req.body;
-  console.log(products);
   products = JSON.parse(products);
-  console.log(typeof (products));
 
   if (userId !== null && userId > 0) {
     database.table('db.orders')

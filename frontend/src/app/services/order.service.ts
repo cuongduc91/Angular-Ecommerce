@@ -10,9 +10,9 @@ export class OrderService {
   private url = environment.serverURL;
   constructor(private http: HttpClient) {}
   getSingleOrder(orderId: number) {
-    return this.http.get<ProductResponseModel[]>(
-      this.url + '/oders/' + orderId
-    );
+    return this.http
+      .get<ProductResponseModel[]>(this.url + '/oders/' + orderId)
+      .toPromise();
   }
 }
 
