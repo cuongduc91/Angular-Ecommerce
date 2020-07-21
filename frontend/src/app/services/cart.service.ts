@@ -211,6 +211,23 @@ export class CartService {
                     },
                   };
                   // TODO Spiner
+                  this.router
+                    .navigate(['/thankyou'], navigationExtras)
+                    .then((p) => {
+                      this.cartDataClient = {
+                        prodData: [{ incart: 0, id: 0 }],
+                        total: 0,
+                      };
+                      this.cartTotal$.next(0);
+                      localStorage.setItem(
+                        'cart',
+                        JSON.stringify(this.cartDataClient)
+                      );
+                    });
+                } else {
+                  //TODO add spinner
+                  this.router.navigateByUrl('/checkout').then();
+                  //TODO add toaster
                 }
               });
             });
