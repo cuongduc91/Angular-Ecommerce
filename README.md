@@ -41,7 +41,9 @@ npm install
 
 ## frontend
 
-### Install dependencies `npm i`
+### Install dependencies
+
+- `npm i`
 
 ### 💥Install Angular
 
