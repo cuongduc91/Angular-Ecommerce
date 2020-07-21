@@ -43,7 +43,10 @@ npm install
 
 ### Install dependencies
 
-- `npm i`
+```
+npm install
+
+```
 
 ### 💥Install Angular
 
