@@ -38,3 +38,17 @@ npm install
 
 - Run and install nodemon: `npm i -g nodemon`
 - Manually run the script without running docker-compose file: `npm start`
+
+## frontend
+
+### Install dependencies `npm i`
+
+### 💥Install Angular
+
+`
+npm install -g @angular/cli
+ng update
+npm audit fix
+ng serve
+
+`
