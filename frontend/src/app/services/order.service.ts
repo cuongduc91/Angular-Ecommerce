@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class OrderService {
   private products: ProductResponseModel[] = [];
-  private url = environment.serverURL;
+  private url = environment.serverUrl;
   constructor(private http: HttpClient) {}
   getSingleOrder(orderId: number) {
     return this.http

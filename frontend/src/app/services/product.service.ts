@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductService {
-  private url = environment.serverURL;
+  private url = environment.serverUrl;
   constructor(private http: HttpClient) {}
 
   /* get all products */
@@ -26,12 +26,12 @@ export class ProductService {
 
   // GET single product from server
   getSingleProduct(id: Number): Observable<ProductModelServer> {
-    return this.http.get<ProductModelServer>(this.url + '/products/' + id);
+    return this.http.get<ProductModelServer>(this.url + 'products/' + id);
   }
   // GET products from 1 category
   getProductsFromCategory(catName: String): Observable<ProductModelServer[]> {
     return this.http.get<ProductModelServer[]>(
-      this.url + '/products/category/' + catName
+      this.url + 'products/category/' + catName
     );
   }
 }
