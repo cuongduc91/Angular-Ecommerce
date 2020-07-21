@@ -11,13 +11,13 @@
 
 - As local MySQL database running on port 3300
 
-## 🐿DBeaver
+### 🐿DBeaver
 
 - Download and install DBeaver as GUI configuration to the MySQL database
 - https://dbeaver.io
 - Configuration as MYSQL_USER/MYSQL_PASSWORD in development.env file on port 3320
 
-## Environment file
+### Environment file
 
 - Create the development.env file in the main folder.
 - Env. Parameters: MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD...
