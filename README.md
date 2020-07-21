@@ -45,10 +45,10 @@ npm install
 
 ### 💥Install Angular
 
-`
+```
 npm install -g @angular/cli
 ng update
 npm audit fix
 ng serve
 
-`
+```
