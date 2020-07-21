@@ -7,7 +7,8 @@ import { CartModelPublic, CartModelServer } from '../models/carts/cart.model';
 import { BehaviorSubject } from 'rxjs';
 import { Router, NavigationExtras } from '@angular/router';
 import { ProductModelServer } from '../models/product/product.model';
-
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Injectable({
   providedIn: 'root',
 })
@@ -41,7 +42,9 @@ export class CartService {
     private http: HttpClient,
     private productService: ProductService,
     private orderService: OrderService,
-    private router: Router
+    private router: Router,
+    private toast: ToastrService,
+    private spinner: NgxSpinnerService
   ) {
     this.cartTotal$.next(this.cartDataServer.total);
     this.cartDataObs$.next(this.cartDataServer);
@@ -95,31 +98,53 @@ export class CartService {
         // calculate total amount
         this.CalculateTotal();
         this.cartDataClient.prodData[0].incart = this.cartDataServer.data[0].numInCart;
-        this.cartDataClient.prodData[0].id = prod.prod.id;
+        this.cartDataClient.prodData[0].id = prod.id;
         this.cartDataClient.total = this.cartDataServer.total;
         localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
         this.cartDataObs$.next({ ...this.cartDataServer });
         //TODO display a toast notification
+        this.toast.success(`${prod.name} added to the cart`, 'Product Added', {
+          timeOut: 1500,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          positionClass: 'toast-top-right',
+        });
       }
 
       // 2. If the cart has some items
       else {
         let index = this.cartDataServer.data.findIndex(
-          (p) => p.product.prod.id === prod.prod.id
+          (p) => p.product.id === prod.id
         );
         console.log(index);
         // if the chosen product is already in cart array
         if (index !== -1) {
-          if (quantity !== undefined && quantity <= prod.prod.quantity) {
+          if (quantity !== undefined && quantity <= prod.quantity) {
             this.cartDataServer.data[index].numInCart =
-              this.cartDataServer.data[index].numInCart < prod.prod.quantity
+              this.cartDataServer.data[index].numInCart < prod.quantity
                 ? quantity
-                : prod.prod.quantity;
+                : prod.quantity;
           } else {
-            this.cartDataServer.data[index].numInCart < prod.prod.quantity
+            this.cartDataServer.data[index].numInCart < prod.quantity
               ? this.cartDataServer.data[index].numInCart++
-              : prod.prod.quantity;
+              : prod.quantity;
           }
+          this.cartDataClient.prodData[index].incart = this.cartDataServer.data[
+            index
+          ].numInCart;
+          this.CalculateTotal();
+          this.cartDataClient.total = this.cartDataServer.total;
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+          this.toast.info(
+            `${prod.name} quantity updated in the cart`,
+            'Product Updated',
+            {
+              timeOut: 1500,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              positionClass: 'toast-top-right',
+            }
+          );
         }
         // if chosen product is not in cart array
         else {
@@ -129,15 +154,23 @@ export class CartService {
           });
           this.cartDataClient.prodData.push({
             incart: 1,
-            id: prod.prod.id,
+            id: prod.id,
           });
+          this.toast.success(
+            `${prod.name} added to the cart`,
+            'Product Added',
+            {
+              timeOut: 1500,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              positionClass: 'toast-top-right',
+            }
+          );
+          this.CalculateTotal();
+          this.cartDataClient.total = this.cartDataServer.total;
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+          this.cartDataObs$.next({ ...this.cartDataServer });
         }
-        //TODO display a toast notification
-        //Calculate total amount
-        this.CalculateTotal();
-        this.cartDataClient.total = this.cartDataServer.total;
-        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-        this.cartDataObs$.next({ ...this.cartDataServer });
       }
     });
   }
@@ -247,11 +280,11 @@ export class CartService {
   private CalculateTotal() {
     let Total = 0;
     this.cartDataServer.data.forEach((p) => {
-      // console.log(p);
+      console.log(p);
       let numInCart = p.numInCart;
       // console.log(numInCart);
       // console.log(typeof numInCart);
-      let price = p.product.prod.price;
+      let price = p.product.price;
       // console.log(price);
       // console.log(typeof price);
       Total += numInCart * price;

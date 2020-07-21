@@ -72,9 +72,17 @@ router.get('/:prodId', (req, res) => {
       'p.id': productId
     })
     .get().then(prod => {
+      console.log(prod);
       if (prod) {
         res.status(200).json({
-          prod
+          'category': prod.category,
+          'name': prod.name,
+          'price': prod.price,
+          'quantity': prod.quantity,
+          'description': prod.description,
+          'image': prod.image,
+          'images': prod.images,
+          'id': prod.id
         })
       } else {
         res.json({
