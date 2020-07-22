@@ -199,84 +199,91 @@ export class CartService {
   //     }
   //   }
   // }
-  // DeleteProductFromCart(index) {
-  //   if (window.confirm('Are you sure you want to delete the item?')) {
-  //     this.cartDataServer.data.splice(index, 1);
-  //     this.cartDataClient.prodData.splice(index, 1);
-  //     // TODO calculate
-  //     this.cartDataClient.total = this.cartDataServer.total;
-  //     if (this.cartDataClient.total === 0) {
-  //       this.cartDataClient = { prodData: [{ incart: 0, id: 0 }], total: 0 };
-  //       localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-  //     } else {
-  //       localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-  //     }
-  //     if (this.cartDataServer.total === 0) {
-  //       this.cartDataServer = {
-  //         data: [
-  //           {
-  //             product: undefined,
-  //             numInCart: 0,
-  //           },
-  //         ],
-  //         total: 0,
-  //       };
-  //       this.cartDataObs$.next({ ...this.cartDataServer });
-  //     } else {
-  //       this.cartDataObs$.next({ ...this.cartDataServer });
-  //     }
-  //   }
-  //   // if the user doesnt want to delete the product, hits the CANCEL button
-  //   else {
-  //     return;
-  //   }
-  // }
-  // CheckoutFromCart(userId: number) {
-  //   this.http
-  //     .post(`${this.url}orders/payment`, null)
-  //     .subscribe((res: { success: boolean }) => {
-  //       if (res.success) {
-  //         this.resetServerData();
-  //         this.http
-  //           .post(`${this.url}orders/new`, {
-  //             userId: userId,
-  //             products: this.cartDataClient.prodData,
-  //           })
-  //           .subscribe((data: OrderConfirmationResponse) => {
-  //             this.orderService.getSingleOrder(data.order_id).then((prods) => {
-  //               if (data.success) {
-  //                 const navigationExtras: NavigationExtras = {
-  //                   state: {
-  //                     message: data.success,
-  //                     products: prods,
-  //                     orderId: data.order_id,
-  //                     total: this.cartDataClient.total,
-  //                   },
-  //                 };
-  //                 // TODO Spiner
-  //                 this.router
-  //                   .navigate(['/thankyou'], navigationExtras)
-  //                   .then((p) => {
-  //                     this.cartDataClient = {
-  //                       prodData: [{ incart: 0, id: 0 }],
-  //                       total: 0,
-  //                     };
-  //                     this.cartTotal$.next(0);
-  //                     localStorage.setItem(
-  //                       'cart',
-  //                       JSON.stringify(this.cartDataClient)
-  //                     );
-  //                   });
-  //               } else {
-  //                 //TODO add spinner
-  //                 this.router.navigateByUrl('/checkout').then();
-  //                 //TODO add toaster
-  //               }
-  //             });
-  //           });
-  //       }
-  //     });
-  // }
+  DeleteProductFromCart(index: number) {
+    if (window.confirm('Are you sure you want to delete the item?')) {
+      this.cartDataServer.data.splice(index, 1);
+      this.cartDataClient.prodData.splice(index, 1);
+      // TODO calculate
+      this.CalculateTotal();
+      this.cartDataClient.total = this.cartDataServer.total;
+      if (this.cartDataClient.total === 0) {
+        this.cartDataClient = { prodData: [{ incart: 0, id: 0 }], total: 0 };
+        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+      } else {
+        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+      }
+      if (this.cartDataServer.total === 0) {
+        this.cartDataServer = {
+          data: [
+            {
+              product: undefined,
+              numInCart: 0,
+            },
+          ],
+          total: 0,
+        };
+        this.cartDataObs$.next({ ...this.cartDataServer });
+      } else {
+        this.cartDataObs$.next({ ...this.cartDataServer });
+      }
+    }
+    // if the user doesnt want to delete the product, hits the CANCEL button
+    else {
+      return;
+    }
+  }
+  CheckoutFromCart(userId: number) {
+    this.http
+      .post(`${this.url}/orders/payment`, null)
+      .subscribe((res: { success: boolean }) => {
+        if (res.success) {
+          this.resetServerData();
+          this.http
+            .post(`${this.url}/orders/new`, {
+              userId,
+              products: this.cartDataClient.prodData,
+            })
+            .subscribe((data: OrderResponse) => {
+              this.orderService.getSingleOrder(data.order_id).then((prods) => {
+                if (data.success) {
+                  const navigationExtras: NavigationExtras = {
+                    state: {
+                      message: data.message,
+                      products: prods,
+                      orderId: data.order_id,
+                      total: this.cartDataClient.total,
+                    },
+                  };
+
+                  this.spinner.hide();
+                  this.router
+                    .navigate(['/thankyou'], navigationExtras)
+                    .then((p) => {
+                      this.cartDataClient = {
+                        total: 0,
+                        prodData: [{ incart: 0, id: 0 }],
+                      };
+                      this.cartTotal$.next(0);
+                      localStorage.setItem(
+                        'cart',
+                        JSON.stringify(this.cartDataClient)
+                      );
+                    });
+                }
+              });
+            });
+        } else {
+          this.spinner.hide();
+          this.router.navigateByUrl('/checkout').then();
+          this.toast.error(`Sorry, failed to book the order`, 'Order Status', {
+            timeOut: 1500,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            positionClass: 'toast-top-right',
+          });
+        }
+      });
+  }
   private CalculateTotal() {
     let Total = 0;
     this.cartDataServer.data.forEach((p) => {
@@ -294,6 +301,14 @@ export class CartService {
     this.cartTotal$.next(this.cartDataServer.total);
     console.log(this.cartTotal$.value);
   }
+  CalculateSubTotal(index): number {
+    let subTotal = 0;
+
+    const p = this.cartDataServer.data[index];
+    subTotal = p.product.price * p.numInCart;
+
+    return subTotal;
+  }
   private resetServerData() {
     this.cartDataServer = {
       data: [
@@ -308,7 +323,7 @@ export class CartService {
   }
 }
 
-interface OrderConfirmationResponse {
+interface OrderResponse {
   order_id: number;
   success: boolean;
   message: string;
