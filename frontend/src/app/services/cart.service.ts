@@ -78,11 +78,11 @@ export class CartService {
               this.cartDataClient.total = this.cartDataServer.total;
               localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
             }
+            this.CalculateTotal();
+            this.cartDataClient.total = this.cartDataServer.total;
             this.cartDataObs$.next({ ...this.cartDataServer });
           });
       });
-    } else {
-      localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
     }
   }
 
@@ -174,31 +174,35 @@ export class CartService {
       }
     });
   }
-  // UpdateCartItem(index, increase: boolean) {
-  //   let data = this.cartDataServer.data[index];
-  //   // if the cart is empty
-  //   if (increase) {
-  //     data.numInCart < data.product.quantity
-  //       ? data.numInCart++
-  //       : data.product.quantity;
-  //     this.cartDataClient.prodData[index].incart = data.numInCart;
-  //     // TODO Calculate the total amount
-  //     this.cartDataClient.total = this.cartDataServer.total;
-  //     this.cartDataObs$.next({ ...this.cartDataServer });
-  //     localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-  //   } else {
-  //     data.numInCart--;
+  UpdateCartItem(index: number, increase: boolean) {
+    let data = this.cartDataServer.data[index];
+    // if the cart is empty
+    if (increase) {
+      data.numInCart < data.product.quantity
+        ? data.numInCart++
+        : data.product.quantity;
+      this.cartDataClient.prodData[index].incart = data.numInCart;
+      // Calculate the total amount
+      // this.CalculateTotal();
+      // this.cartDataClient.total = this.cartDataServer.total;
+      this.cartDataObs$.next({ ...this.cartDataServer });
+      localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+    } else {
+      data.numInCart--;
 
-  //     if (data.numInCart < 1) {
-  //       // TODO delete method
-  //       this.cartDataObs$.next({ ...this.cartDataServer });
-  //       this.cartDataClient.prodData[index].incart = data.numInCart;
-  //       // TODO calculate the total amount
-  //       this.cartDataClient.total = this.cartDataServer.total;
-  //       localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-  //     }
-  //   }
-  // }
+      if (data.numInCart < 1) {
+        // TODO delete method
+        this.cartDataObs$.next({ ...this.cartDataServer });
+        this.cartDataClient.prodData[index].incart = data.numInCart;
+        // TODO calculate the total amount
+        // this.CalculateTotal();
+        // this.cartDataClient.total = this.cartDataServer.total;
+        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+      }
+    }
+    this.CalculateTotal();
+    this.cartDataClient.total = this.cartDataServer.total;
+  }
   DeleteProductFromCart(index: number) {
     if (window.confirm('Are you sure you want to delete the item?')) {
       this.cartDataServer.data.splice(index, 1);
@@ -301,7 +305,7 @@ export class CartService {
     this.cartTotal$.next(this.cartDataServer.total);
     console.log(this.cartTotal$.value);
   }
-  CalculateSubTotal(index): number {
+  CalculateSubTotal(index: number): number {
     let subTotal = 0;
 
     const p = this.cartDataServer.data[index];
