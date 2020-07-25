@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 /* GET single order*/
 router.get('/:id', async (req, res) => {
   database.table('db.view_order')
-    .withFields(['id', 'title', 'description', 'price', 'username']).sort({
+    .withFields(['id', 'title', 'description', 'price', 'username', 'image', 'quantity as quantityOrdered']).sort({
       id: .1
     })
     .filter({

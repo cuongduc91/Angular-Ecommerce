@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ProductResponseModel } from '../models/product/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +15,4 @@ export class OrderService {
       .get<ProductResponseModel[]>(this.url + 'orders/' + orderId)
       .toPromise();
   }
-}
-
-interface ProductResponseModel {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  quantityOrdered: number;
-  image: string;
 }
