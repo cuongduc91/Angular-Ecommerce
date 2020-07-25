@@ -238,12 +238,12 @@ export class CartService {
   }
   CheckoutFromCart(userId: number) {
     this.http
-      .post(`${this.url}/orders/payment`, null)
+      .post(`${this.url}orders/payment`, null)
       .subscribe((res: { success: boolean }) => {
         if (res.success) {
           this.resetServerData();
           this.http
-            .post(`${this.url}/orders/new`, {
+            .post(`${this.url}orders/new`, {
               userId,
               products: this.cartDataClient.prodData,
             })
@@ -291,7 +291,7 @@ export class CartService {
   private CalculateTotal() {
     let Total = 0;
     this.cartDataServer.data.forEach((p) => {
-      console.log(p);
+      // console.log(p);
       let numInCart = p.numInCart;
       // console.log(numInCart);
       // console.log(typeof numInCart);
@@ -303,7 +303,7 @@ export class CartService {
     // console.log(Total);
     this.cartDataServer.total = Total;
     this.cartTotal$.next(this.cartDataServer.total);
-    console.log(this.cartTotal$.value);
+    // console.log(this.cartTotal$.value);
   }
   CalculateSubTotal(index: number): number {
     let subTotal = 0;

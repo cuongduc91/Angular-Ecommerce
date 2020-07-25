@@ -11,7 +11,7 @@ export class OrderService {
   constructor(private http: HttpClient) {}
   getSingleOrder(orderId: number) {
     return this.http
-      .get<ProductResponseModel[]>(this.url + '/oders/' + orderId)
+      .get<ProductResponseModel[]>(this.url + 'orders/' + orderId)
       .toPromise();
   }
 }
