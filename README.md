@@ -25,7 +25,7 @@
 ## backend
 
 - As the php dockerfile folder for nodejs running on localhost:3000
-- The backend is created in the help of third library [express-generator](https://www.npmjs.com/package/express-generator)
+- The backend is created in the help of the third library [express-generator](https://www.npmjs.com/package/express-generator)
 
 ### Nodejs
 
