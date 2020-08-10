@@ -20,14 +20,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //Import Routes 
 const productsRouter = require('./routes/products');
-// const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
 const ordersRouter = require('./routes/orders');
-
+const authRouter = require('./routes/auth');
 //Use Routes 
 app.use('/api/products', productsRouter);
-// app.use('/api/users', usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/orders', ordersRouter);
-
+app.use('/api/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
