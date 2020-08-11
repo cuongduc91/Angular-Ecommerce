@@ -27,6 +27,7 @@ import {
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
 import { RegisterComponent } from './components/register/register.component';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +52,7 @@ import { RegisterComponent } from './components/register/register.component';
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     SocialLoginModule,
+    FormsModule,
   ],
   providers: [
     {
