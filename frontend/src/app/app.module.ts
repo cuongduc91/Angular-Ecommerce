@@ -25,6 +25,8 @@ import {
 } from 'angularx-social-login';
 
 import { GoogleLoginProvider } from 'angularx-social-login';
+import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
+import { RegisterComponent } from './components/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +39,8 @@ import { GoogleLoginProvider } from 'angularx-social-login';
     ThankyouComponent,
     LoginComponent,
     ProfileComponent,
+    HomeLayoutComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
