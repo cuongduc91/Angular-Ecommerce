@@ -47,6 +47,30 @@ router.get('/:userId', (req, res) => {
     }).catch(err => res.json(err));
 });
 
+// Get one user with matched email
+
+router.get('/validate/:email', (req, res) => {
+  let email = req.params.email;
+  database.table('users')
+    .filter({
+      email: email
+    })
+    .get()
+    .then(user => {
+      if (user) {
+        res.json({
+          status: true,
+          user: user
+        });
+      } else {
+        res.json({
+          status: false,
+          user: null
+        });
+      }
+    }).catch(err => res.json(err));
+})
+
 /* UPDATE USER DATA */
 router.patch('/:userId', async (req, res) => {
   let userId = req.params.userId; // Get the User ID from the parameter

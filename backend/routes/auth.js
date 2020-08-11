@@ -7,28 +7,36 @@ const {
 const router = express.Router();
 const {
   helper
-} = require('./../config/helpers');
+} = require('../config/helpers');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-//Login Route
+// const hasAuthFields = require('../config/helpers').hasAuthFields
 
-// router.post('/login', [helper.hasAuthFields, helper.isPasswordAndUserMatch], (req, res) => {
-//   let token = jwt.sign({
-//     state: 'true',
-//     email: req.body.email,
-//     username: req.body.username
-//   }, helper.secret, {
-//     algorithm: 'HS512',
-//     expiresIn: '4h'
-//   });
-//   res.json({
-//     token: token,
-//     auth: true,
-//     email: req.body.email,
-//     username: req.body.username
-//   });
-// });
+// LOGIN ROUTE
+router.post('/login', [require('../config/helpers').hasAuthFields, require('../config/helpers').isPasswordAndUserMatch], (req, res) => {
+  // console.log(helper.hasAuthFields);
+  let token = jwt.sign({
+    state: 'true',
+    email: req.body.email,
+    username: req.body.username
+  }, helper.secret, {
+    algorithm: 'HS512',
+    expiresIn: '4h'
+  });
+  res.json({
+    token: token,
+    auth: true,
+    email: req.email,
+    username: req.username,
+    fname: req.fname,
+    lname: req.lname,
+    photoUrl: req.photoUrl,
+    userId: req.userId,
+    type: req.type,
+    role: req.role
+  });
+});
 
 // REGISTER ROUTE
 router.post('/register', [
@@ -36,6 +44,7 @@ router.post('/register', [
   .normalizeEmail({
     all_lowercase: true
   }),
+
   check('password').escape().trim().not().isEmpty().withMessage('Field can\'t be empty')
   .isLength({
     min: 6
@@ -62,12 +71,13 @@ router.post('/register', [
       errors: errors.array()
     });
   } else {
-
     let email = req.body.email;
     let username = email.split("@")[0];
     let password = await bcrypt.hash(req.body.password, 10);
     let fname = req.body.fname;
     let lname = req.body.lname;
+    let typeOfUser = req.body.typeOfUser;
+    let photoUrl = req.body.photoUrl === null ? 'https://image.shutterstock.com/image-vector/person-gray-photo-placeholder-man-260nw-1259815156.jpg' : req.body.photoUrl
 
     /**
      * ROLE 777 = ADMIN
@@ -75,19 +85,21 @@ router.post('/register', [
      **/
     helper.database.table('users').insert({
       username: username,
-      password: password,
+      password: password || null,
       email: email,
       role: 555,
       lname: lname || null,
-      fname: fname || null
+      fname: fname || null,
+      type: typeOfUser || 'local',
+      photoUrl: photoUrl
     }).then(lastId => {
       if (lastId > 0) {
         res.status(201).json({
-          message: 'Registration successful.'
+          message: 'Registration successful'
         });
       } else {
         res.status(501).json({
-          message: 'Registration failed.'
+          message: 'Registration failed'
         });
       }
     }).catch(err => res.status(433).json({

@@ -10,10 +10,11 @@ let conn = new Mysqli({
 });
 const secret = "1SBz93MsqTs7KgwARcB0I0ihpILIjk3w";
 let db = conn.emit(false, '');
+
 module.exports = {
   database: db,
   secret: secret,
-  validJWTNeed: (req, res, next) => {
+  validJWTNeeded: (req, res, next) => {
     if (req.headers['authorization']) {
       try {
         let authorization = req.headers['authorization'].split(' ');
@@ -24,7 +25,7 @@ module.exports = {
           return next();
         }
       } catch (err) {
-        return res.status(403).send("Authentication failed!");
+        return res.status(403).send("Authentication failed");
       }
     } else {
       return res.status(401).send("No authorization header found.");
@@ -37,7 +38,7 @@ module.exports = {
       if (!req.body.email) {
         errors.push('Missing email field');
       }
-      if (!req.body.password) {
+      if (!req.body.password && req.body.typeOfUser !== 'social') {
         errors.push('Missing password field');
       }
 
@@ -65,19 +66,32 @@ module.exports = {
         username: myEmail
       }]
     }).get();
+
     if (user) {
       const match = await bcrypt.compare(myPlaintextPassword, user.password);
 
       if (match) {
         req.username = user.username;
         req.email = user.email;
+        req.fname = user.fname;
+        req.lname = user.lname;
+        req.photoUrl = user.photoUrl;
+        req.userId = user.id;
+        req.type = user.type;
+        req.role = user.role;
         next();
       } else {
-        res.status(401).send("Username or password incorrect");
+        res.status(401).json({
+          message: "Username or password incorrect",
+          status: false
+        });
       }
 
     } else {
-      res.status(401).send("Username or password incorrect");
+      res.status(401).json({
+        message: "Username or password incorrect",
+        status: false
+      });
     }
   }
-}
+};
